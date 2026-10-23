@@ -309,6 +309,18 @@ void TrainerEngine::render() const
 }
 void TrainerEngine::handleMenuInput(char c)
 {
+    // '0' — 10-й урок (Прокрутка экрана), индекс 9
+    if (c == '0')
+    {
+        size_t idx = 9;
+        if (idx < lessons_.size())
+        {
+            current_lesson_idx_ = idx;
+            current_key_idx_ = 0;
+            state_ = AppState::PLAYING;
+        }
+        return;
+    }
     if (c >= '1' && c <= '9')
     {
         size_t idx = static_cast<size_t>(c - '1');

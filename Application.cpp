@@ -24,5 +24,5 @@ void Application::run()
         engine.update(c);
     }
     TerminalUI::clearScreen();
-    cout << "Спасибо за игру!";
+    cout << "Спасибо за игру!\n";
 }

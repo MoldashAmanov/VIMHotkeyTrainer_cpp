@@ -1,7 +1,7 @@
 #pragma once
 #include "Lesson.h"
 #include <vector>
-#include <csdtdef>
+#include <cstddef>
 
 // Состояния конечного автомата (State Machine)
 // Каждый экран тренажера - это отдельное состояние
@@ -48,6 +48,11 @@ class TrainerEngine
         int total_keystrokes_ = 0;
 
         // Обработчики ввода для каждого состояния
+        void handleMenuInput(char c);
+        void handlePlayingInput(char c);
+        void handleCompleteInput(char c);
+        
+        // Рендеры для каждого состояния
         void renderMenu() const;
         void renderPlaying() const;
         void renderComplete() const;

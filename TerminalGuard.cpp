@@ -1,4 +1,4 @@
-#include "TerminalGuide.h"
+#include "TerminalGuard.h"
 #include <termios.h>
 #include <unistd.h>
 
@@ -9,7 +9,7 @@ namespace {
 }
 
 // Конструктов: включаем "сырой" режим терминала
-TerminalGuide::TerminalGuide()
+TerminalGuard::TerminalGuard()
 {
     // Получаем текущие настройки терминала
     // STDIN_FILENO = 0 (стандартный ввод)
@@ -29,7 +29,7 @@ TerminalGuide::TerminalGuide()
 }
 // Деструктор: восстанавливаем настройки терминала
 // Это гарантирует, что даже при сбросе программы терминал вернется в нормальное состояние
-TerminalGuide::~TerminalGuide()
+TerminalGuard::~TerminalGuard()
 {
     if (g_terminal_saved)
     {

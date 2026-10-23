@@ -1,5 +1,5 @@
 #include "TrainerEngine.h"
-#include "TrainerUI.h"
+#include "TerminalUI.h"
 #include <iostream>
 
 using namespace std;
@@ -164,7 +164,7 @@ void TrainerEngine::initializeLessons()
     lessons_.emplace_back("Вставка",
         "p - вставить после курсора/строки\n"
         "P - вставить перед курсором/строкой\n"
-        "]p - вставить с правильным отступом\n"
+        "]p - вставить с правильным отступом\n",
         "pP]p", 5);
 
     lessons_.emplace_back("Замена",
@@ -265,7 +265,7 @@ void TrainerEngine::update(char input)
             handleMenuInput(input);
             break;
         }
-        case AppState::Playing:
+        case AppState::PLAYING:
         {
             handlePlayingInput(input);
             break;
@@ -281,7 +281,7 @@ void TrainerEngine::update(char input)
         }
     }
 }
-voidTrainerEngine::render() const
+void TrainerEngine::render() const
 {
     TerminalUI::clearScreen();
     switch (state_)
@@ -307,21 +307,21 @@ voidTrainerEngine::render() const
         }
     }
 }
-void TrainerEnging::handleMenuInput(char c)
+void TrainerEngine::handleMenuInput(char c)
 {
-    if (c >= '1' && c == '9')
+    if (c >= '1' && c <= '9')
     {
         size_t idx = static_cast<size_t>(c - '1');
         if (idx < lessons_.size())
         {
-            current_lessons_idx_ = idx;
+            current_lesson_idx_ = idx;
             current_key_idx_ = 0;
             state_ = AppState::PLAYING;
         }
-        else if (c == 'q' || c == 'Q')
-        {
-            state_ = AppState::EXIT;
-        }
+    }
+    else if (c == 'q' || c == 'Q')
+    {
+        state_ = AppState::EXIT;
     }
 }
 void TrainerEngine::handlePlayingInput(char c)
@@ -345,12 +345,13 @@ void TrainerEngine::handlePlayingInput(char c)
             completed_lessons_++;
             state_ = AppState::LESSON_COMPLETE;
         }
-        else
-        {
-            // Строгость Vim: ошибка = сброс прогресса
-            current_key_idx_ = 0;
-        }
     }
+    else
+    {
+        // Строгость Vim: ошибка = сброс прогресса
+        current_key_idx_ = 0;
+    }
+    
 }
 void TrainerEngine::handleCompleteInput(char c)
 {
@@ -436,12 +437,12 @@ void TrainerEngine::renderPlaying() const
     cout << Color::CYAN << "Ваш ввод: " << Color::RESET;
     for (size_t i = 0; i < current_key_idx_; ++i)
     {
-        cout << Color::GREEN << lesson.getTargetKeys()[i] << " " Color::RESET;
+        cout << Color::GREEN << lesson.getTargetKeys()[i] << " " << Color::RESET;
     }
     cout << "\n\n";
     // Прогресс бар
     int progress = static_cast<int>((current_key_idx_ * 100) / lesson.getTargetKeys().length());
-    cout << Color::CYAN < "Прогресс: [" << Color::RESET;
+    cout << Color::CYAN << "Прогресс: [" << Color::RESET;
     for (int i = 0; i < 50; ++i)
     {
         if (i < progress / 2)
@@ -458,7 +459,7 @@ void TrainerEngine::renderPlaying() const
 }
 void TrainerEngine::renderComplete() const
 {
-    TerminaUI::printCentered(Color::GREEN + Color::BOLD + "Урок пройден!" + Color::RESET);
+    TerminalUI::printCentered(Color::GREEN + Color::BOLD + "Урок пройден!" + Color::RESET);
     cout << "\n";
 
     TerminalUI::printBox("Поздравляем!",

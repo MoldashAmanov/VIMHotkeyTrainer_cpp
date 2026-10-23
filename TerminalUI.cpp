@@ -1,9 +1,9 @@
 #include "TerminalUI.h"
-#incluide "iostream"
+#include "iostream"
 
 using namespace std;
 
-namespase Color
+namespace Color
 {
     const string RESET      = "\033[0m";
     const string RED        = "\033[31m";
@@ -16,7 +16,7 @@ namespase Color
 // Очищаем экран с помощью ANSI escape codes
 // \033[2j - очистить весь экран
 // \033[1;1H - переместить курсор в левый верхний угол
-void TerminalUI:clearScreen()
+void TerminalUI::clearScreen()
 {
     cout << "\033[2J\033[1;1H";
 }
